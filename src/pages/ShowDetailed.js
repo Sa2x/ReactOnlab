@@ -10,7 +10,9 @@ const ShowDetailed = () => {
     fetchTvShowById(id)
   );
 
-  return <div>{!isLoading && data.name}</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div> Error message: + {error.mesage}</div>;
+  return <div>{data.name}</div>;
 };
 
 export default ShowDetailed;

@@ -1,2 +1,2 @@
-export const fetchTvShows = () =>
-  fetch("http://api.tvmaze.com/shows?page=1").then((res) => res.json());
+export const fetchTvShows = (page) =>
+  fetch(`http://api.tvmaze.com/shows?page=${page}`).then((res) => res.json());

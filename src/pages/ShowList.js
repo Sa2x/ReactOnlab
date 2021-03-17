@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { fetchTvShows } from "../api/fetchTvShows";
-import { Link } from "react-router-dom";
 import ShowCard from "../components/ShowCard";
+import ShowDetailed from "./ShowDetailed";
 
 const ShowList = () => {
   const [page, setPage] = useState(0);
   const { data, isLoading, error, isPreviousData } = useQuery(
     ["shows", page],
-    () => fetchTvShows(page),
-    { keepPreviousData: true }
+    () => fetchTvShows(page)
+    // { keepPreviousData: true }
   );
 
   const onPageInputChange = (event) => {
@@ -38,15 +38,17 @@ const ShowList = () => {
           Next Page
         </button>
       </div>
-      <div>
-        {console.log(data)}
+      <div className="shows">
         {data &&
           data.length > 0 &&
           data.map((show) => (
             // <Link to={`/shows/${show.id}`}>
             //   <h3>{show.name}</h3>
             // </Link>
-            <ShowCard show={show} />
+            <ShowCard
+              key={show.id}
+              show={{ name: show.name, image: show.image, id: show.id }}
+            />
           ))}
       </div>
     </div>

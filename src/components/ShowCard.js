@@ -1,15 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Image from "./Image";
 
 const ShowCard = ({ show }) => {
+  const { name, image, id } = show;
   return (
-    <Link to={`/shows/${show.id}`}>
+    <Link to={`/shows/${id}`}>
       <div className="showcard">
-        <img
-          src={show.image && show.image.original}
-          alt={show.image && show.image.medium}
+        <Image
+          src={image && image.original}
+          placeholderImg="https://via.placeholder.com/400x200.png?text=This+Will+Be+Shown+Before+Load"
         />
-        <h3>{show.name}</h3>
+        {/* <img src={show.image.original} alt={show.image && show.image.medium} /> */}
+        <h3 className="title">{name}</h3>
       </div>
     </Link>
   );

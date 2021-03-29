@@ -21,7 +21,6 @@ const Fn = ({ src, placeholderImg, errorImg, ...props }) => {
       img.removeEventListener("error", onError);
     };
   }, [src, onLoad, onError]);
-
   return <img {...props} alt={imgSrc} src={imgSrc} />;
 };
 

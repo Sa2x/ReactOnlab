@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import { QueryClient, QueryClientProvider } from "react-query";
 import ShowList from "./pages/ShowList";
 import ShowDetailed from "./pages/ShowDetailed";
+import ShowFavourites from "./pages/ShowFavoruites";
+
 function App() {
   const queryClient = new QueryClient();
 
@@ -21,6 +23,9 @@ function App() {
               </Route>
               <Route exact path="/shows/:id">
                 <ShowDetailed />
+              </Route>
+              <Route exact path="/favourites">
+                <ShowFavourites />
               </Route>
             </Switch>
           </Layout>

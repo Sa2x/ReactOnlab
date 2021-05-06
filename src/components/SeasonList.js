@@ -14,7 +14,6 @@ const SeasonList = () => {
   if (error) return <div> Error message: + {error.mesage}</div>;
   return (
     <div>
-      {console.log(data)}
       {data.map((season) => (
         <Season season={season} key={season.id} />
       ))}

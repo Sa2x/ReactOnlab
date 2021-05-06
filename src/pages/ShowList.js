@@ -1,34 +1,47 @@
 import React, { useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { useQuery } from "react-query";
 import { fetchTvShows } from "../api/fetchTvShows";
 import ShowCard from "../components/ShowCard";
-import ShowDetailed from "./ShowDetailed";
+import ShowTable from "../components/ShowTable";
+import debounce, { isEqual } from "lodash";
 
 const ShowList = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-
+  const [keyword, setKeyword] = useState("");
   const { data, isLoading, error, isPreviousData } = useQuery(
     ["shows", page, search],
-    () => fetchTvShows(page, search)
+    () => fetchTvShows(page - 1, search)
     // { keepPreviousData: true }
   );
+  const [displayMode, setDisplayMode] = useState("cards");
 
   const onPageInputChange = (event) => {
     event.preventDefault();
     setPage(event.target.value);
   };
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    setKeyword(event.target.value);
+  };
+
+  const onSearch = () => {
+    setSearch(keyword);
+  };
+
+  const onDisplayModeChange = (mode) => setDisplayMode(mode);
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div> Error message: + {error.mesage}</div>;
 
-  const handleChange = (e) => {
-    setSearch(e.target.value);
-  };
   return (
     <div>
+      {console.log(keyword)}
       {!search && (
         <div>
-          <button onClick={() => setPage((prev) => Math.max(prev - 1, 0))}>
+          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>
             Prev page
           </button>
           <input value={page} onChange={onPageInputChange}></input>
@@ -38,7 +51,6 @@ const ShowList = () => {
                 setPage((old) => old + 1);
               }
             }}
-            // Disable the Next Page button until we know a next page is available
             disabled={isPreviousData}
           >
             Next Page
@@ -47,15 +59,21 @@ const ShowList = () => {
       )}
 
       <div>
-        <input value={search} onChange={handleChange} type="text" />
+        <input value={keyword} onChange={handleChange} type="text" />
+        <button onClick={onSearch}>Search</button>
       </div>
+      <div>
+        {displayMode === "table" && (
+          <button onClick={() => onDisplayModeChange("cards")}>Cards</button>
+        )}
+        {displayMode === "cards" && (
+          <button onClick={() => onDisplayModeChange("table")}>Table</button>
+        )}
+      </div>
+      
       <div className="shows">
-        {data &&
-          data.length > 0 &&
+        {data && data.length > 0 && displayMode === "cards" ? (
           data.map((show) => {
-            // <Link to={`/shows/${show.id}`}>
-            //   <h3>{show.name}</h3>
-            // </Link>
             let data = search ? show.show : show;
             return (
               <ShowCard
@@ -63,7 +81,10 @@ const ShowList = () => {
                 show={{ name: data.name, image: data.image, id: data.id }}
               />
             );
-          })}
+          })
+        ) : (
+          <ShowTable data={data} />
+        )}
       </div>
     </div>
   );

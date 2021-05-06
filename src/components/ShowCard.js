@@ -1,9 +1,12 @@
+import { motion, useMotionValue } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
 import Image from "./Image";
 
 const ShowCard = ({ show }) => {
   const { name, image, id } = show;
+  const x = useMotionValue(0);
+
   return (
     <Link to={`/shows/${id}`}>
       <div className="showcard">

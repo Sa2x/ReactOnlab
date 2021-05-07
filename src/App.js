@@ -21,7 +21,7 @@ function App() {
               <Route exact path="/shows">
                 <ShowList />
               </Route>
-              <Route exact path="/shows/:id">
+              <Route exact path="/show/:id">
                 <ShowDetailed />
               </Route>
               <Route exact path="/favourites">

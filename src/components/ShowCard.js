@@ -1,21 +1,21 @@
-import { motion, useMotionValue } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
 import Image from "./Image";
 
 const ShowCard = ({ show }) => {
-  const { name, image, id } = show;
-  const x = useMotionValue(0);
+  const { name, image, id, status, rating } = show;
 
   return (
-    <Link to={`/shows/${id}`}>
-      <div className="showcard">
+    <Link to={`/show/${id}`} className="showCard">
+      <div>
+        {console.log(show)}
         <Image
           src={image && image.original}
           placeholderImg="https://via.placeholder.com/400x200.png?text=This+Will+Be+Shown+Before+Load"
         />
-        {/* <img src={show.image.original} alt={show.image && show.image.medium} /> */}
         <h3 className="title">{name}</h3>
+        <h3 className="info">Status: {status}</h3>
+        <h3 className="info">Rating: {rating}</h3>
       </div>
     </Link>
   );

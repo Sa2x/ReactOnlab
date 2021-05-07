@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTable } from "react-table";
 const ShowTable = ({ data }) => {
-  const columns = [
-    {
-      Header: "Name",
-      accessor: "name",
-    },
-    {
-      Header: "Status",
-      accessor: "status",
-    },
-    {
-      Header: "Rating",
-      accessor: "rating.average",
-    },
-  ];
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Name",
+        accessor: "name",
+      },
+      {
+        Header: "Status",
+        accessor: "status",
+      },
+      {
+        Header: "Rating",
+        accessor: "rating.average",
+      },
+    ],
+    []
+  );
   const {
     getTableProps,
     getTableBodyProps,

@@ -40,7 +40,7 @@ const ShowDetailed = () => {
   useEffect(() => {
     const isFav = !!find(favourites, ["id", id]);
     setIsFavourite(isFav);
-  }, [favourites]);
+  }, [favourites, id]);
 
   useHotkeys(
     "right",

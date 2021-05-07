@@ -1,27 +1,19 @@
 import React, { useState } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
 import { useQuery } from "react-query";
 import { fetchTvShows } from "../api/fetchTvShows";
 import ShowCard from "../components/ShowCard";
 import ShowTable from "../components/ShowTable";
-import { useHistory, useParams } from "react-router-dom";
-import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
   faTable,
-  faIddCard,
   faIdCard,
   faSearch,
   faTimesCircle,
-  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const ShowList = () => {
-  //const { pages } = useParams();
-  const history = useHistory();
-
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [keyword, setKeyword] = useState("");

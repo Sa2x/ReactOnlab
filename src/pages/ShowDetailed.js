@@ -92,19 +92,21 @@ const ShowDetailed = () => {
               <p>{genre}</p>
             ))}
           </div>
-
-          <p
-            style={
-              data.status === "Ended"
-                ? { fontWeight: "bold", color: "red" }
-                : { fontWeight: "bold", color: "#05386b" }
-            }
-          >
-            {data.status}
-          </p>
-          <p>
-            Rating: {data.rating && data.rating.average && data.rating.average}
-          </p>
+          <div className="statusRating">
+            <p
+              style={
+                data.status === "Ended"
+                  ? { fontWeight: "bold", color: "red" }
+                  : { fontWeight: "bold", color: "#05386b" }
+              }
+            >
+              {data.status}
+            </p>
+            <p>
+              Rating:{" "}
+              {data.rating && data.rating.average && data.rating.average}
+            </p>
+          </div>
           <p>{replace(replace(data.summary, `<p>`, ""), "</p>", "")}</p>
         </div>
       </div>

@@ -13,7 +13,7 @@ const SeasonList = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div> Error message: + {error.mesage}</div>;
   return (
-    <div>
+    <div className="seasons">
       {data.map((season) => (
         <Season season={season} key={season.id} />
       ))}

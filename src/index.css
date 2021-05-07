@@ -276,6 +276,62 @@ a {
   margin: 0px;
 }
 
+.detailPanel .statusRating {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.detailPanel p {
+  font-weight: bold;
+}
+.seasons {
+  background-color: #edf5e1;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.seasons .season {
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px;
+  color: #05386b;
+  border: 2px solid #5cdb95;
+  border-radius: 10px;
+  background-color: #edf5d1;
+}
+
+.season h5 {
+  margin: 0px;
+}
+.season svg {
+  margin: 0px;
+  cursor: pointer;
+}
+
+.seasons .episodes {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  color: #05386b;
+}
+
+.episodes .episode h3,
+h5,
+p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.episodes .episode {
+  background-color: #edf5d1;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 2px solid #5cdb95;
+}
 table {
   border: 2px solid #05386b;
   justify-self: center;

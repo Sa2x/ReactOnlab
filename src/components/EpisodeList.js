@@ -13,7 +13,7 @@ const EpisodeList = ({ seasonNumber }) => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div> Error message: + {error.mesage}</div>;
   return (
-    <div>
+    <div className="episodes">
       {data
         .filter((episode) => episode.season === seasonNumber)
         .map((episode) => {

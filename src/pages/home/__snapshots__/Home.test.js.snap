@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomePage Home Page should render correctly 1`] = `
+<div
+  className="home"
+>
+  <div
+    className="icons"
+  />
+  <h1>
+    Watcherr
+  </h1>
+  <h3>
+    Keep track of your favourite TV Shows
+  </h3>
+</div>
+`;

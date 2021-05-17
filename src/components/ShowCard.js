@@ -7,15 +7,14 @@ const ShowCard = ({ show }) => {
 
   return (
     <Link to={`/show/${id}`} className="showCard">
-      <div>
-        {console.log(show)}
+      <div data-testid="showcard">
         <Image
           src={image && image.original}
-          placeholderImg="https://via.placeholder.com/400x200.png?text=This+Will+Be+Shown+Before+Load"
+          placeholderImg="https://media.istockphoto.com/photos/paper-cup-with-a-popcorn-on-white-picture-id1160441778?s=612x612"
         />
         <h3 className="title">{name}</h3>
         <h3 className="info">Status: {status}</h3>
-        <h3 className="info">Rating: {rating}</h3>
+        {rating && <h3 className="info">Rating: {rating}</h3>}
       </div>
     </Link>
   );

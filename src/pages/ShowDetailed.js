@@ -46,7 +46,7 @@ const ShowDetailed = () => {
     "right",
     debounce(() => {
       history.replace("/");
-      history.push(`/shows/${Number(id) + 1}`);
+      history.push(`/show/${Number(id) + 1}`);
     }, 500)
   );
 
@@ -54,7 +54,7 @@ const ShowDetailed = () => {
     "left",
     debounce(() => {
       history.replace("/");
-      history.push(`/shows/${Number(id) - 1}`);
+      history.push(`/show/${Number(id) - 1}`);
     }, 500)
   );
 

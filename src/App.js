@@ -1,17 +1,18 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import { QueryClient, QueryClientProvider } from "react-query";
-import ShowList from "./pages/ShowList";
+import ShowList from "./pages/showlist/ShowList";
 import ShowDetailed from "./pages/ShowDetailed";
 import ShowFavourites from "./pages/ShowFavoruites";
+import SnackBarProvider from "react-simple-snackbar";
 
 function App() {
   const queryClient = new QueryClient();
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <SnackBarProvider>
         <QueryClientProvider client={queryClient}>
           <Layout>
             <Switch>
@@ -30,7 +31,7 @@ function App() {
             </Switch>
           </Layout>
         </QueryClientProvider>
-      </BrowserRouter>
+      </SnackBarProvider>
     </div>
   );
 }

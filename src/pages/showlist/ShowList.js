@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { useQuery } from "react-query";
-import { fetchTvShows } from "../api/fetchTvShows";
-import ShowCard from "../components/ShowCard";
-import ShowTable from "../components/ShowTable";
+import React, { useState, useMemo, useEffect } from "react";
+import { useShowQuery } from "./useShowQuery";
+import ShowCard from "../../components/ShowCard";
+import ShowTable from "../../components/ShowTable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -12,17 +11,19 @@ import {
   faSearch,
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { useHotkeys } from "react-hotkeys-hook";
+import { useSnackbar } from "react-simple-snackbar";
+import { debounce } from "lodash";
 
 const ShowList = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [keyword, setKeyword] = useState("");
-  const { data, isLoading, error, isPreviousData } = useQuery(
-    ["shows", page, search],
-    () => fetchTvShows(Number(page) - 1, search),
-    { keepPreviousData: true }
-  );
   const [displayMode, setDisplayMode] = useState("cards");
+
+  const { data, isLoading, error, isPreviousData } = useShowQuery(page, search);
+
+  const [openSnackbar] = useSnackbar();
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -35,7 +36,6 @@ const ShowList = () => {
   };
 
   const onSearch = () => {
-    console.log(keyword);
     setSearch(keyword);
   };
 
@@ -48,8 +48,40 @@ const ShowList = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div> Error message: + {error.message}</div>;
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onSearch();
+    }
+  };
+
+  const renderTable = () => {
+    if (search.length === 0) {
+      return <ShowTable data={data} />;
+    } else {
+      const datas = data.map((show) => show.show).filter((data) => data);
+      console.log(datas);
+      return <ShowTable data={datas} />;
+    }
+  };
+
+  useEffect(() => {
+    openSnackbar("Navigate between pages with left and right arrow", 5000);
+  }, []);
+
+  useHotkeys(
+    "right",
+    debounce(() => setPage((page) => page + 1), 300)
+  );
+
+  useHotkeys(
+    "left",
+    debounce(() => setPage((page) => page - 1), 300)
+  );
+
+  if (isLoading) return <div data-testid="loader">Loading...</div>;
+
+  if (error)
+    return <div data-testid="error"> Error message: + {error.message}</div>;
 
   return (
     <div>
@@ -57,6 +89,7 @@ const ShowList = () => {
         <input
           value={keyword}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           type="text"
           placeholder="Search TV Series"
         />
@@ -103,7 +136,6 @@ const ShowList = () => {
         )}
       </div>
       <div className="shows">
-        {search && console.log(data)}
         {data && data.length > 0 && displayMode === "cards" ? (
           data.map((show) => {
             //let data = search ? show.show : show;
@@ -123,9 +155,7 @@ const ShowList = () => {
             );
           })
         ) : (
-          <div className="shows-table">
-            <ShowTable data={data} />
-          </div>
+          <div className="shows-table">{renderTable()}</div>
         )}
       </div>
     </div>

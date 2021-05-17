@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 
 const Fn = ({ src, placeholderImg, errorImg, ...props }) => {
   const [imgSrc, setSrc] = useState(placeholderImg || src);
@@ -21,7 +22,9 @@ const Fn = ({ src, placeholderImg, errorImg, ...props }) => {
       img.removeEventListener("error", onError);
     };
   }, [src, onLoad, onError]);
-  return <img {...props} alt={imgSrc} src={imgSrc} />;
+  if (imgSrc === placeholderImg) {
+    return <Skeleton circle={true} height={350} />;
+  } else return <img className="image" {...props} alt={imgSrc} src={imgSrc} />;
 };
 
 export default Fn;

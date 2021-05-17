@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useTable } from "react-table";
 const ShowTable = ({ data }) => {
   const columns = useMemo(
@@ -18,6 +18,8 @@ const ShowTable = ({ data }) => {
     ],
     []
   );
+
+  console.log(data);
   const {
     getTableProps,
     getTableBodyProps,

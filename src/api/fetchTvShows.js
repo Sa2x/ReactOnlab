@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const fetchTvShows = async (page, search) => {
   let response = {};
@@ -9,7 +9,7 @@ export const fetchTvShows = async (page, search) => {
     response = data;
   } else {
     const { data } = await axios.get(
-      `https://api.tvmaze.com/shows?page=${page}`
+      `http://localhost:8080/api/show?page=${page}`
     );
     response = data;
   }

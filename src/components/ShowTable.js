@@ -1,25 +1,23 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { useTable } from "react-table";
+import React, { useMemo, useState, useEffect } from 'react';
+import { useTable } from 'react-table';
 const ShowTable = ({ data }) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Name",
-        accessor: "name",
+        Header: 'Name',
+        accessor: 'name',
       },
       {
-        Header: "Status",
-        accessor: "status",
+        Header: 'Status',
+        accessor: 'status',
       },
       {
-        Header: "Rating",
-        accessor: "rating.average",
+        Header: 'Rating',
+        accessor: 'rating.average',
       },
     ],
     []
   );
-
-  console.log(data);
 
   const {
     getTableProps,
@@ -38,7 +36,7 @@ const ShowTable = ({ data }) => {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
@@ -49,7 +47,7 @@ const ShowTable = ({ data }) => {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
               })}
             </tr>
           );

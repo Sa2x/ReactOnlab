@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import { useQuery } from "react-query";
-import { useHistory, useParams } from "react-router-dom";
-import { replace, debounce, find } from "lodash";
+import React, { useEffect, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useQuery } from 'react-query';
+import { useHistory, useParams } from 'react-router-dom';
+import { replace, debounce, find } from 'lodash';
 
-import { fetchTvShowById } from "../api/fetchTvShowbyId";
-import SeasonList from "../components/SeasonList";
-import { useFavouritesStore } from "../zustand/FavouritesStore";
-import Image from "../components/Image";
+import { fetchTvShowById } from '../api/fetchTvShowbyId';
+import SeasonList from '../components/SeasonList';
+import { useFavouritesStore } from '../zustand/FavouritesStore';
+import Image from '../components/Image';
 
-import { faStar as unfilledStar } from "@fortawesome/free-regular-svg-icons";
-import { faStar as filledStar } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar as unfilledStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as filledStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ShowDetailed = () => {
   const history = useHistory();
   const { id } = useParams();
-  const { data, isLoading, error } = useQuery(["show", id], () =>
+
+  const { data, isLoading, error } = useQuery(['show', id], () =>
     fetchTvShowById(id)
   );
 
@@ -38,22 +39,22 @@ const ShowDetailed = () => {
   };
 
   useEffect(() => {
-    const isFav = !!find(favourites, ["id", id]);
+    const isFav = !!find(favourites, ['id', id]);
     setIsFavourite(isFav);
   }, [favourites, id]);
 
   useHotkeys(
-    "right",
+    'right',
     debounce(() => {
-      history.replace("/");
+      history.replace('/');
       history.push(`/show/${Number(id) + 1}`);
     }, 500)
   );
 
   useHotkeys(
-    "left",
+    'left',
     debounce(() => {
-      history.replace("/");
+      history.replace('/');
       history.push(`/show/${Number(id) - 1}`);
     }, 500)
   );
@@ -64,10 +65,9 @@ const ShowDetailed = () => {
     <div className="showDetailed">
       <div className="infoPanel">
         <Image
-          src={data.image && data.image.original}
+          src={data.imgSrc}
           placeholderImg="https://via.placeholder.com/400x200.png?text=This+Will+Be+Shown+Before+Load"
         />
-        {console.log(data)}
         <div className="detailPanel">
           <div className="nameRow">
             <h3>{data.name}</h3>
@@ -95,22 +95,19 @@ const ShowDetailed = () => {
           <div className="statusRating">
             <p
               style={
-                data.status === "Ended"
-                  ? { fontWeight: "bold", color: "red" }
-                  : { fontWeight: "bold", color: "#05386b" }
+                data.status === 'Ended'
+                  ? { fontWeight: 'bold', color: 'red' }
+                  : { fontWeight: 'bold', color: '#05386b' }
               }
             >
               {data.status}
             </p>
-            <p>
-              Rating:{" "}
-              {data.rating && data.rating.average && data.rating.average}
-            </p>
+            <p>Rating: {data.ratingAverage}</p>
           </div>
-          <p>{replace(replace(data.summary, `<p>`, ""), "</p>", "")}</p>
+          <p>{replace(replace(data.summary, `<p>`, ''), '</p>', '')}</p>
         </div>
       </div>
-      <SeasonList />
+      <SeasonList seasonCount={data.seasonCount} episodes={data.episodes} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
-import Skeleton from "react-loading-skeleton";
+import React, { useState, useCallback, useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 const Fn = ({ src, placeholderImg, errorImg, ...props }) => {
   const [imgSrc, setSrc] = useState(placeholderImg || src);
@@ -15,11 +15,11 @@ const Fn = ({ src, placeholderImg, errorImg, ...props }) => {
   useEffect(() => {
     const img = new Image();
     img.src = src;
-    img.addEventListener("load", onLoad);
-    img.addEventListener("error", onError);
+    img.addEventListener('load', onLoad);
+    img.addEventListener('error', onError);
     return () => {
-      img.removeEventListener("load", onLoad);
-      img.removeEventListener("error", onError);
+      img.removeEventListener('load', onLoad);
+      img.removeEventListener('error', onError);
     };
   }, [src, onLoad, onError]);
   if (imgSrc === placeholderImg) {

@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { useShowQuery } from "./useShowQuery";
-import ShowCard from "../../components/ShowCard";
-import ShowTable from "../../components/ShowTable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useMemo, useEffect } from 'react';
+import { useShowQuery } from './useShowQuery';
+import ShowCard from '../../components/ShowCard';
+import ShowTable from '../../components/ShowTable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronLeft,
   faChevronRight,
@@ -10,16 +10,16 @@ import {
   faIdCard,
   faSearch,
   faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import { useHotkeys } from "react-hotkeys-hook";
-import { useSnackbar } from "react-simple-snackbar";
-import { debounce } from "lodash";
+} from '@fortawesome/free-solid-svg-icons';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useSnackbar } from 'react-simple-snackbar';
+import { debounce } from 'lodash';
 
 const ShowList = () => {
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [keyword, setKeyword] = useState("");
-  const [displayMode, setDisplayMode] = useState("cards");
+  const [search, setSearch] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [displayMode, setDisplayMode] = useState('cards');
 
   const { data, isLoading, error, isPreviousData } = useShowQuery(page, search);
 
@@ -31,8 +31,8 @@ const ShowList = () => {
   };
 
   const emptySearch = () => {
-    setKeyword("");
-    setSearch("");
+    setKeyword('');
+    setSearch('');
   };
 
   const onSearch = () => {
@@ -40,16 +40,16 @@ const ShowList = () => {
   };
 
   const switchDisplayMode = () => {
-    if (displayMode === "table") {
-      setDisplayMode("cards");
+    if (displayMode === 'table') {
+      setDisplayMode('cards');
     }
-    if (displayMode === "cards") {
-      setDisplayMode("table");
+    if (displayMode === 'cards') {
+      setDisplayMode('table');
     }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onSearch();
     }
   };
@@ -59,22 +59,21 @@ const ShowList = () => {
       return <ShowTable data={data} />;
     } else {
       const datas = data.map((show) => show.show).filter((data) => data);
-      console.log(datas);
       return <ShowTable data={datas} />;
     }
   };
 
   useEffect(() => {
-    openSnackbar("Navigate between pages with left and right arrow", 5000);
+    openSnackbar('Navigate between pages with left and right arrow', 5000);
   }, []);
 
   useHotkeys(
-    "right",
+    'right',
     debounce(() => setPage((page) => page + 1), 300)
   );
 
   useHotkeys(
-    "left",
+    'left',
     debounce(() => setPage((page) => page - 1), 300)
   );
 
@@ -105,13 +104,13 @@ const ShowList = () => {
         />
       </div>
       <div className="modeAndPage">
-        {displayMode === "table" && (
+        {displayMode === 'table' && (
           <div className="modeSwitch">
             <FontAwesomeIcon icon={faIdCard} onClick={switchDisplayMode} />
             <h4>Switch to card mode</h4>
           </div>
         )}
-        {displayMode === "cards" && (
+        {displayMode === 'cards' && (
           <div div className="modeSwitch">
             <FontAwesomeIcon icon={faTable} onClick={switchDisplayMode} />
             <h4>Switch to table mode</h4>
@@ -136,20 +135,20 @@ const ShowList = () => {
         )}
       </div>
       <div className="shows">
-        {data && data.length > 0 && displayMode === "cards" ? (
+        {data && data.length > 0 && displayMode === 'cards' ? (
           data.map((show) => {
             //let data = search ? show.show : show;
             if (search && !show.show) return null;
             let data = search ? show.show : show;
             return (
               <ShowCard
-                key={data.id}
+                key={data.apiId}
                 show={{
                   name: data.name,
-                  image: data.image,
-                  id: data.id,
+                  image: data.imgSrc,
+                  id: data.apiId,
                   status: data.status,
-                  rating: data.rating && data.rating.average,
+                  rating: data.ratingAverage,
                 }}
               />
             );

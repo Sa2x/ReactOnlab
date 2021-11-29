@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Image from "./Image";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Image from './Image';
 
 const ShowCard = ({ show }) => {
   const { name, image, id, status, rating } = show;
@@ -9,7 +9,7 @@ const ShowCard = ({ show }) => {
     <Link to={`/show/${id}`} className="showCard">
       <div data-testid="showcard">
         <Image
-          src={image && image.original}
+          src={image}
           placeholderImg="https://media.istockphoto.com/photos/paper-cup-with-a-popcorn-on-white-picture-id1160441778?s=612x612"
         />
         <h3 className="title">{name}</h3>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { useHistory, useParams } from 'react-router-dom';
 import { replace, debounce, find } from 'lodash';
 
@@ -12,37 +12,60 @@ import Image from '../components/Image';
 import { faStar as unfilledStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as filledStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const ShowDetailed = () => {
   const history = useHistory();
   const { id } = useParams();
-
+  const { user, token, refresh } = useAuth();
   const { data, isLoading, error } = useQuery(['show', id], () =>
     fetchTvShowById(id)
   );
 
-  const { favourites, addFavourite, removeFavourite } = useFavouritesStore();
-  const [isFavourite, setIsFavourite] = useState(false);
+  // const { favourites, addFavourite, removeFavourite } = useFavouritesStore();
 
-  const addToFavourites = () => {
-    addFavourite({
-      id: id,
-      name: data.name,
-      image: data.image,
-      status: data.status,
-      rating: data.rating && data.rating.average,
-    });
-  };
+  // const [isFavourite, setIsFavourite] = useState(false);
 
-  const removeFromFavourites = () => {
-    removeFavourite({ id: id });
-  };
+  // const favourites = user.likedShows;
+  const like = useMutation(() =>
+    axios
+      .post(`http://localhost:8080/api/show/${id}/like`, null, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => refresh())
+  );
 
-  useEffect(() => {
-    const isFav = !!find(favourites, ['id', id]);
-    setIsFavourite(isFav);
-  }, [favourites, id]);
+  const unlike = useMutation(() =>
+    axios
+      .post(`http://localhost:8080/api/show/${id}/unlike`, null, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => refresh())
+  );
+  // const addToFavourites = () => {
+  //   addFavourite({
+  //     id: id,
+  //     name: data.name,
+  //     image: data.image,
+  //     status: data.status,
+  //     rating: data.rating && data.rating.average,
+  //   });
+  // };
 
+  // const removeFromFavourites = () => {
+  //   removeFavourite({ id: id });
+  // };
+
+  // useEffect(() => {
+  //   const isFav = !!find(favourites, ['id', id]);
+  //   setIsFavourite(isFav);
+  // }, [favourites, id]);
+
+  // const isFavourite = false;
+  const isFavourite = user.likedShows.some((show) => show.apiId == id);
+  console.log(isFavourite);
+  console.log(user);
   useHotkeys(
     'right',
     debounce(() => {
@@ -75,14 +98,14 @@ const ShowDetailed = () => {
             {!isFavourite && (
               <FontAwesomeIcon
                 icon={unfilledStar}
-                onClick={addToFavourites}
+                onClick={like.mutate}
                 title="Add to favourites"
               />
             )}
             {isFavourite && (
               <FontAwesomeIcon
                 icon={filledStar}
-                onClick={removeFromFavourites}
+                onClick={unlike.mutate}
                 title="Remove from favourites"
               />
             )}

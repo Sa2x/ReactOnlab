@@ -8,7 +8,12 @@ import ShowFavourites from './pages/ShowFavoruites';
 import SnackBarProvider from 'react-simple-snackbar';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import Register from './pages/auth/Register';
+import Login from './pages/auth/Login';
+
 import { AuthProvider } from './context/AuthContext';
+import Unathenticated from './pages/Unathenticated';
+import GuardedRoute from './components/GuardedRoute';
+import UserList from './pages/UserList';
 
 function App() {
   const queryClient = new QueryClient();
@@ -23,17 +28,26 @@ function App() {
                 <Route exact path="/">
                   <Home />
                 </Route>
-                <Route exact path="/shows">
+                <GuardedRoute exact path="/shows">
                   <ShowList />
-                </Route>
-                <Route exact path="/show/:id">
+                </GuardedRoute>
+                <GuardedRoute exact path="/show/:id">
                   <ShowDetailed />
-                </Route>
-                <Route exact path="/favourites">
+                </GuardedRoute>
+                <GuardedRoute exact path="/favourites">
                   <ShowFavourites />
-                </Route>
+                </GuardedRoute>
+                <GuardedRoute exact path="/users">
+                  <UserList />
+                </GuardedRoute>
                 <Route exact path="/register">
                   <Register />
+                </Route>
+                <Route exact path="/login">
+                  <Login />
+                </Route>
+                <Route exact path="/unauthenticated">
+                  <Unathenticated />
                 </Route>
               </Switch>
             </Layout>

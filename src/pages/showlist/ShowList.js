@@ -12,7 +12,7 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useSnackbar } from 'react-simple-snackbar';
+import { useSnackbar } from 'notistack';
 import { debounce } from 'lodash';
 
 const ShowList = () => {
@@ -23,7 +23,7 @@ const ShowList = () => {
 
   const { data, isLoading, error, isPreviousData } = useShowQuery(page, search);
 
-  const [openSnackbar] = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -64,7 +64,7 @@ const ShowList = () => {
   };
 
   useEffect(() => {
-    openSnackbar('Navigate between pages with left and right arrow', 5000);
+    enqueueSnackbar('Navigate between pages with left and right arrow', 5000);
   }, []);
 
   useHotkeys(

@@ -1,13 +1,13 @@
 import { getSuggestedQuery } from '@testing-library/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useSnackbar } from 'react-simple-snackbar';
+import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
 
 const AuthContext = React.createContext({});
 
 const AuthProvider = ({ children }) => {
-  const [openSnackbar] = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const history = useHistory();
@@ -39,10 +39,11 @@ const AuthProvider = ({ children }) => {
           name: response.data.name,
           likedShows: response.data.likedShows,
           imageUrl: response.data.imageUrl,
+          followed: response.data.followed,
         })
       )
       .catch((error) => {
-        openSnackbar('Failed registration:' + error.response, 5000);
+        enqueueSnackbar('Failed registration:' + error.response, 5000);
       });
   };
 
@@ -56,9 +57,9 @@ const AuthProvider = ({ children }) => {
     console.log(formData);
     await axios
       .post('http://localhost:8080/api/user/register', formData)
-      .then((response) => openSnackbar('Succesful registration', 5000))
+      .then((response) => enqueueSnackbar('Succesful registration', 5000))
       .catch((error) => {
-        openSnackbar('Failed registration:' + error.response, 5000);
+        enqueueSnackbar('Failed registration:' + error.response, 5000);
       });
   };
 
@@ -68,12 +69,12 @@ const AuthProvider = ({ children }) => {
       .then((response) => {
         setToken(response.data.token);
         localStorage.setItem('token', response.data.token);
-        openSnackbar('Succesful login', 5000);
+        enqueueSnackbar('Succesful login', 5000);
         history.push('/');
         return response;
       })
       .catch((error) => {
-        openSnackbar('Failed login:' + error.response, 5000);
+        enqueueSnackbar('Failed login:' + error.response, 5000);
       });
 
   const refresh = () => getUser();

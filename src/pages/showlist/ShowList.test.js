@@ -1,28 +1,28 @@
-import React from "react";
-import { shallow } from "enzyme";
+import React from 'react';
+import { shallow } from 'enzyme';
 
-import "../../../setupTests";
-import ShowList from "./ShowList";
-import { QueryClientProvider } from "react-query";
-import axios from "axios";
-import { useSnackbar } from "react-simple-snackbar";
-import { fetchTvShows } from "../../api/fetchTvShows";
-import { useShowQuery } from "./useShowQuery";
-import { Route } from "react-router-dom";
-import { getByTestId, render } from "@testing-library/react";
+import '../../../setupTests';
+import ShowList from './ShowList';
+import { QueryClientProvider } from 'react-query';
+import axios from 'axios';
+import { useSnackbar } from 'notistack';
+import { fetchTvShows } from '../../api/fetchTvShows';
+import { useShowQuery } from './useShowQuery';
+import { Route } from 'react-router-dom';
+import { getByTestId, render } from '@testing-library/react';
 
-jest.mock("axios");
+jest.mock('axios');
 
-jest.mock("./useShowQuery", () => ({
+jest.mock('./useShowQuery', () => ({
   useShowQuery: jest.fn(),
 }));
 
-jest.mock("react-simple-snackbar", () => ({
+jest.mock('notistack', () => ({
   useSnackbar: jest.fn(),
 }));
 
-describe("Show List", () => {
-  it("renders", () => {
+describe('Show List', () => {
+  it('renders', () => {
     shallow(
       <QueryClientProvider>
         <ShowList />
@@ -30,47 +30,47 @@ describe("Show List", () => {
     );
   });
 
-  it("TV Shows fetching", async () => {
+  it('TV Shows fetching', async () => {
     const data = {};
     const resp = {
       data: data,
     };
     axios.get.mockImplementationOnce(() => Promise.resolve(resp));
 
-    await expect(fetchTvShows(2, "")).resolves.toEqual(data);
+    await expect(fetchTvShows(2, '')).resolves.toEqual(data);
 
     expect(axios.get).toHaveBeenCalledWith(
       `https://api.tvmaze.com/shows?page=2`
     );
   });
 
-  describe("renders ", () => {
+  describe('renders ', () => {
     beforeEach(() => {
       useShowQuery.mockImplementation(() => ({}));
       useSnackbar.mockImplementation(() => {
-        const openSnackbar = jest.fn();
-        return [openSnackbar];
+        const enqueueSnackbar = jest.fn();
+        return [enqueueSnackbar];
       });
     });
-    it("loading screen", () => {
+    it('loading screen', () => {
       useShowQuery.mockImplementation(() => ({
         isLoading: true,
       }));
       const { getByTestId } = render(<ShowList />);
 
-      expect(getByTestId("loader")).toBeTruthy();
+      expect(getByTestId('loader')).toBeTruthy();
     });
 
-    it("error screen", () => {
+    it('error screen', () => {
       useShowQuery.mockImplementation(() => ({
         error: true,
       }));
       const { getByTestId } = render(<ShowList />);
 
-      expect(getByTestId("error")).toBeTruthy();
+      expect(getByTestId('error')).toBeTruthy();
     });
 
-    it("data", () => {
+    it('data', () => {
       useShowQuery.mockImplementation(() => ({
         data: [
           {
@@ -78,10 +78,10 @@ describe("Show List", () => {
           },
         ],
       }));
-      const { getByTestId } = renderWithRouter(() => <ShowList />, "");
+      const { getByTestId } = renderWithRouter(() => <ShowList />, '');
 
-      expect(useShowQuery).toHaveBeenCalledWith(1, "");
-      expect(getByTestId("showcard")).toBeTruthy();
+      expect(useShowQuery).toHaveBeenCalledWith(1, '');
+      expect(getByTestId('showcard')).toBeTruthy();
     });
   });
 });
